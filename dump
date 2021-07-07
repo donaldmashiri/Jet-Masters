@@ -1,0 +1,78 @@
+
+        <?php
+
+ if(isset($_POST['submit'])){
+
+    $location = $_POST['location'];
+    $query = "UPDATE custom_made SET ";
+    $query .= "location  = '{$location}' ";
+    $query .= "WHERE custom_id = $open ";
+
+   
+    $update_query = mysqli_query($conn, $query);
+    header("Location: open.php?open=".$open );
+
+    // echo "<p class='alert alert-success'>Your Location has been updated</p>";
+    
+    if (!$update_query) {
+        die("Query failed" . mysqli_error($conn));
+    }
+    
+ }
+
+?>
+
+
+
+
+
+
+
+<!-- Location -->
+<div class="modal fade" id="review" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">View Review</h5>
+      
+      </div>
+      <form action="" method="post">
+      <div class="modal-body">
+
+<?php
+
+
+$sql = "SELECT * FROM reviews WHERE custom_id = $open";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+// output data of each row
+while($row = $result->fetch_assoc()) {
+$review_id = $row["review_id"];
+$review_text = $row["review_text"];
+$review_image = $row["review_image"];
+
+
+?>
+<p class='text-info'><?php echo $review_text;  ?></p>
+<img src='img/<?php echo $review_image;  ?>'>
+
+<?php
+
+}
+} else {
+echo "<p class='text-danger'>Not Submitted yet</p>";
+}
+
+
+?>
+   
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
